@@ -1,0 +1,24 @@
+# HTTP Proxy settings
+#export http_proxy=127.0.0.1:54321
+#export https_proxy=127.0.0.1:54321
+
+# Your domains
+export ACME_DOMAINS=("example.com" "*.example.com")
+export ISSUE_PARAMS="" #eg: to use cloudflare dns, add this: --dns dns_cf   
+
+# Target Git
+# WARNING: If you use CI, Put them in the CI's environment variable settings, and DELETE them from this file
+export CERT_GIT_URI="github.com/example/certs.git"
+export CERT_GIT_BRANCH=master
+export CERT_GIT_SCHEME="https://"
+export CERT_GIT_USER="example"
+export CERT_GIT_EMAIL="example@example.com"
+export CERT_GIT_PASSWORD=""
+export CERT_GIT_COMMIT_MESSAGE="AutoCommit"
+
+# Put acme.sh environment arugments here
+#export CF_Key=""
+#export CF_Email=""
+
+# AutoCert Application Git
+export APP_GIT_URL="https://github.com/kenvix/AutoCert.git"
