@@ -1,4 +1,3 @@
-chmod +x *.sh
-source ./data/config.sh
+source ./init.sh
 
 ./acme/acme.sh --home ./data/acme $@

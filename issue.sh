@@ -1,5 +1,4 @@
-chmod +x *.sh
-source ./data/config.sh
+source ./init.sh
 
 export ACME_MERGED_PARAMS="--issue "
 
@@ -10,6 +9,4 @@ done
 
 export ACME_MERGED_PARAMS+=" $ISSUE_PARAMS"
 
-echo "$ $ACME_MERGED_PARAMS"
-
-./acme.sh $ACME_MERGED_PARAMS 
+RunACME

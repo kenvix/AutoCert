@@ -1,8 +1,6 @@
-chmod +x *.sh
-source ./data/config.sh
+source ./init.sh
 
 export ACME_MERGED_PARAMS="--cron "
 
-echo "$ $ACME_MERGED_PARAMS"
-
-./acme.sh $ACME_MERGED_PARAMS 
+RunACME
+exit $?
