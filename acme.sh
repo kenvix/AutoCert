@@ -1,4 +1,4 @@
 chmod +x *.sh
-source config.sh
+source ./data/config.sh
 
-./acme-core.sh --home ./data $@
+./acme/acme.sh --home ./data/acme $@
