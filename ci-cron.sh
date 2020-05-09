@@ -5,22 +5,51 @@ export AUTOCERT_CI_MODE=1
 git config --global user.email "$CERT_GIT_EMAIL"
 git config --global user.name "$CERT_GIT_USER"
 
-if [ ! -d "./data" ]; then
-    git clone --recursive --branch $CERT_GIT_BRANCH --depth=1 "$CERT_GIT_SCHEME$CERT_GIT_USER:$CERT_GIT_PASSWORD@$CERT_GIT_URI" ./data
+if [ -f "./deployment.key" ]; then
+    echo "[AutoCert] Deployment key file deployment.key found, installing key"
+    if [ ! -d ~/.ssh/ ]; then
+        mkdir ~/.ssh/
+    fi
+    if [ -f ~/.ssh/id_rsa ]; then
+        mv ~/.ssh/id_rsa ~/.ssh/id_rsa.autocert-backup
+    fi
+    cp -f "./deployment.key" ~/.ssh/id_rsa
+    chmod 600 ~/.ssh/id_rsa
 fi
 
-chmod -R +x ./data
+ExitCIShell() {
+    if [ -f ~/.ssh/id_rsa.autocert-backup ]; then
+        echo "[AutoCert] Recovering ssh key"
+        rm ~/.ssh/id_rsa
+        mv ~/.ssh/id_rsa.autocert-backup ~/.ssh/id_rsa
+    fi
+    exit $?
+}
+
+git clone --recursive --branch $CERT_GIT_BRANCH --depth=1 "$CERT_GIT_URI" ./data
+
+chmod -R 777 *.sh
+echo "[AutoCert] Files in ./ present:"
+ls -al ./
+
+chmod -R 777 ./data
+chmod +x ./data/config.sh
+echo "[AutoCert] Files in ./data present:"
 ls -al ./data
 
+git submodule update --init --recursive
+chmod -R 777 ./acme
+
 source ./init.sh
-./cron.sh
+source ./cron.sh
 
 if [ $? -ne 0 ]
 then
-    exit $?
+    echo "[AutoCert] acme.sh failed with code $?"
+    ExitCIShell
 fi
 
-cd ./data
+pushd ./data
 
 git add .
 git commit -m "$CERT_GIT_COMMIT_MESSAGE" -v -a
@@ -28,5 +57,9 @@ if [ $? -eq 0 ]
 then
     echo "[AutoCert] File changes detected"
     git push --force -v "origin" $CERT_GIT_BRANCH
-    exit $?
+    ExitCIShell
 fi
+
+popd
+
+ExitCIShell
