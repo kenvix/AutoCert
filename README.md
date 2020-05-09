@@ -40,3 +40,12 @@
 部署修改好的仓库到支持 CI 的git环境（例如github）
 
 若使用 Github Actions，则重命名 `.github.example` 为 `.github` ，并修改其中的环境变量，即可完成部署
+
+## 客户端
+
+1. 安装 git
+2. 将 `client.sh` `init.sh` `config.sh` 三个文件上传到需要部署证书客户端的服务器
+3. 若使用 ssh 方式，请同时上传 `deployment.key` 文件
+4. 进入所在目录，运行 `chmod +x *.sh`
+5. 上传并按需修改 `after-update-cert.sh` 若没有回调需要运行则可以不上传这个文件
+6. 运行 `client.sh` 即可更新证书
