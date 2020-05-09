@@ -1,18 +1,21 @@
 # Client for autocert
-
+pushd $(cd "$(dirname "$0")";pwd)
 source ./init.sh
+
+if [ -f "./deployment.key" ]; then
+    if [ ! $CERT_SSH_AGENT_INITIALIZED ]; then
+        export CERT_SSH_AGENT_INITIALIZED=1
+        ssh-agent bash ./client.sh
+        exit $?
+    fi
+
+    chmod 600 ./deployment.key
+    ssh-add ./deployment.key
+fi
 
 if [ ! -f "./data/.git/HEAD" ]; then
     echo "[AutoCert] Cloning Cert git ..."
-
-    if [ -f "./deployment.key" ]; then
-        eval `ssh-agent -s`
-        ssh-add ./deployment.key
-        yes | git clone --recursive --branch $CERT_GIT_BRANCH --depth=1 "$CERT_GIT_URI" ./data
-        ssh-add -d deployment.key
-    else
-        git clone --recursive --branch $CERT_GIT_BRANCH --depth=1 "$CERT_GIT_URI" ./data
-    fi
+    git clone --recursive --branch $CERT_GIT_BRANCH --depth=1 "$CERT_GIT_URI" ./data
 fi
 
 
@@ -31,3 +34,5 @@ else
         ./after-update-cert.sh
     fi
 fi
+
+popd
