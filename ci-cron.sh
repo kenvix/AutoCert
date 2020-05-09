@@ -4,7 +4,10 @@ export AUTOCERT_CI_MODE=1
 
 git config --global user.email "$CERT_GIT_EMAIL"
 git config --global user.name "$CERT_GIT_USER"
-git clone --recursive --branch $CERT_GIT_BRANCH --depth=1 "$CERT_GIT_SCHEME$CERT_GIT_USER:$CERT_GIT_PASSWORD@$CERT_GIT_URI" ./data
+
+if [ ! -d "./data" ]; then
+    git clone --recursive --branch $CERT_GIT_BRANCH --depth=1 "$CERT_GIT_SCHEME$CERT_GIT_USER:$CERT_GIT_PASSWORD@$CERT_GIT_URI" ./data
+fi
 
 chmod -R +x ./data
 ls -al ./data
