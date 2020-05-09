@@ -39,12 +39,4 @@
 
 部署修改好的仓库到支持 CI 的git环境（例如github）
 
-若使用 Github Actions，则重命名 `.github.example` 为 `.github` 即可完成部署。若使用其他 CI 则需要在 CI 设置部署所执行的脚本：
-
-```shell
-chmod -R 777 *
-ls -al
-./ci-cron.sh
-```
-
-即可完成部署
+若使用 Github Actions，则重命名 `.github.example` 为 `.github` ，并修改其中的环境变量，即可完成部署
