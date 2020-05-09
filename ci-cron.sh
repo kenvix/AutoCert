@@ -41,10 +41,9 @@ git submodule update --init --recursive
 chmod -R 777 ./acme
 
 source ./init.sh
-source ./cron.sh
+./cron.sh
 
-if [ $? -ne 0 ]
-then
+if [ $? -ne 0 ]; then
     echo "[AutoCert] acme.sh failed with code $?"
     ExitCIShell
 fi
@@ -53,11 +52,17 @@ pushd ./data
 
 git add .
 git commit -m "$CERT_GIT_COMMIT_MESSAGE" -v -a
-if [ $? -eq 0 ]
-then
+if [ $? -eq 0 ]; then
     echo "[AutoCert] File changes detected"
     git push --force -v "origin" $CERT_GIT_BRANCH
     ExitCIShell
+else
+    echo "[AutoCert] No changes to commit."
+fi
+
+if [ $CERT_GIT_MAKE_RESULT_ZIP ]; then
+    echo "[AutoCert] Making cert artifact zip"
+    zip -9 -r ../result.zip *
 fi
 
 popd
