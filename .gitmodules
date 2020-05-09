@@ -1,0 +1,6 @@
+[submodule "Add acme submodule"]
+	path = Add acme submodule
+	url = https://github.com/acmesh-official/acme.sh.git
+[submodule "acme"]
+	path = acme
+	url = https://github.com/acmesh-official/acme.sh.git
