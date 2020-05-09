@@ -10,10 +10,8 @@ export ISSUE_PARAMS="" #eg: to use cloudflare dns, add this: --dns dns_cf
 # WARNING: If you use CI, Put them in the CI's environment variable settings, and DELETE them from this file
 export CERT_GIT_URI="github.com/example/certs.git"
 export CERT_GIT_BRANCH=master
-export CERT_GIT_SCHEME="https://"
 export CERT_GIT_USER="example"
 export CERT_GIT_EMAIL="example@example.com"
-export CERT_GIT_PASSWORD=""
 export CERT_GIT_COMMIT_MESSAGE="AutoCommit"
 
 # Put acme.sh environment arugments here

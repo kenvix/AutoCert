@@ -8,7 +8,7 @@
 
 1. 克隆本项目仓库
 2. 在本项目目录下创建 data 文件夹
-3. 复制 config.sh.example 到 data 文件夹，命名为 config.sh
+3. 重命名 config.sh.example 为 config.sh
 4. 编辑 config.sh
 
 ### 配置项说明
@@ -29,18 +29,19 @@
 
 | 环境变量名称 | 说明 | 示例 |
 | ----------- | -------- | ------ |
-| CERT_GIT_URI | 存储证书的Git地址，不含前面的https:// | github.com/kenvix/certs.git |
+| CERT_GIT_URI | 存储证书的Git地址，若为 https 则包括前面的https:// | git@github.com:kenvix/AutoCert.git <br/> https://username:password@github.com/kenvix/AutoCert.git |
 | CERT_GIT_BRANCH | 存储证书的Git分支 | master  |
-| CERT_GIT_SCHEME | 存储证书的Git协议 | https:// |
 | CERT_GIT_USER | 存储证书的Git用户名 | kenvix |
 | CERT_GIT_EMAIL | 存储证书的Git用户的邮箱 | kenvixzure@live.com |
-| CERT_GIT_PASSWORD | 存储证书的Git用户的密码 | 123456 |
 | APP_GIT_URL | 本程序所在仓库完整地址(原样复制即可) | https://github.com/kenvix/AutoCert.git |
 
-然后，在 CI 设置部署所执行的脚本：
+若使用 `https://` 协议克隆仓库，请指明用户名和密码，若使用 ssh 方式，请放置 RSA 密钥到本目录的 `deployment.key` 文件
+
+部署修改好的仓库到支持 CI 的git环境（例如github）
+
+若使用 Github Actions，则重命名 `.github.example` 为 `.github` 即可完成部署。若使用其他 CI 则需要在 CI 设置部署所执行的脚本：
 
 ```shell
-git clone --recursive --depth=1 "$APP_GIT_URL" .
 chmod -R 777 *
 ls -al
 ./ci-cron.sh
