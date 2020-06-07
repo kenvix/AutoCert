@@ -1,4 +1,4 @@
-echo "[AutoCert] Cron for CI"
+echo "[AutoCert] Cron for CI version 3"
 
 export AUTOCERT_CI_MODE=1
 
