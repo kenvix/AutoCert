@@ -28,6 +28,11 @@ ExitCIShell() {
 
 git clone --recursive --branch $CERT_GIT_BRANCH --depth=1 "$CERT_GIT_URI" ./data
 
+if [ $? -ne 0 ]; then
+    echo "[AutoCert] Checkout Data repo failed $CERT_GIT_URI ($CERT_GIT_BRANCH) with code $?"
+    ExitCIShell
+fi
+
 chmod -R 777 *.sh
 echo "[AutoCert] Files in ./ present:"
 ls -al ./
