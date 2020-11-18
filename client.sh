@@ -21,6 +21,7 @@ fi
 
 pushd data
 GIT_PREVIOUS_VERSION=$(git rev-parse HEAD)
+git reset --hard HEAD || true
 git pull -v --no-rebase "origin" $CERT_GIT_BRANCH
 GIT_CURRENT_VERSION=$(git rev-parse HEAD)
 popd
