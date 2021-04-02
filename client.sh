@@ -1,3 +1,4 @@
+#!/bin/bash
 # Client for autocert
 pushd $(cd "$(dirname "$0")";pwd)
 source ./init.sh

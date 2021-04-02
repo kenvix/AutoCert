@@ -1,3 +1,5 @@
+#!/bin/bash
+
 source ./init.sh
 
 export ACME_MERGED_PARAMS="--issue "

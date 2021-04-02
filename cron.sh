@@ -1,3 +1,4 @@
+#!/bin/bash
 source ./init.sh
 
 CreatePFX() {

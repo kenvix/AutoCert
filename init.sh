@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ -z $AUTOCERT_INITED ]
 then
     if [ ! -x "./config.sh" ]; then

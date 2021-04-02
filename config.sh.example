@@ -1,3 +1,4 @@
+#!/bin/bash
 # HTTP Proxy settings
 #export http_proxy=127.0.0.1:54321
 #export https_proxy=127.0.0.1:54321
