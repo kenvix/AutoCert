@@ -24,14 +24,15 @@ ExitCIShell() {
         rm ~/.ssh/id_rsa
         mv ~/.ssh/id_rsa.autocert-backup ~/.ssh/id_rsa
     fi
-    exit $?
+    exit $1
 }
 
 git clone --recursive --branch $CERT_GIT_BRANCH --depth=1 "$CERT_GIT_URI" ./data
 
 if [ $? -ne 0 ]; then
-    echo "[AutoCert] Checkout Data repo failed $CERT_GIT_URI ($CERT_GIT_BRANCH) with code $?"
-    ExitCIShell
+    ErrorCode=$?
+    echo "[AutoCert] Checkout Data repo failed $CERT_GIT_URI ($CERT_GIT_BRANCH) with code $ErrorCode"
+    ExitCIShell $ErrorCode
 fi
 
 chmod -R 777 *.sh

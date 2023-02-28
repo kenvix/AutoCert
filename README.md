@@ -4,6 +4,8 @@
 
 当域名的证书不存在时，程序可以自动申请证书，但不保证成功。
 
+客户端支持 Linux 和 Windows，Windows 下须使用 Git Bash 执行。在 Windows 下，支持 Powershell，会自动执行 `after-update-cert.ps1`，该文件内置了自动更新 IIS 的证书的脚本，若不需要则可以删除该文件
+
 ## 配置
 
 1. 克隆本项目仓库

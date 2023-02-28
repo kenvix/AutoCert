@@ -1,7 +1,16 @@
 #!/bin/bash
+
 # Client for autocert
-pushd $(cd "$(dirname "$0")";pwd)
+export AUTOCERT_ROOT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+pushd "$AUTOCERT_ROOT_DIR"
 source ./init.sh
+
+while getopts ":s" option; do
+   case $option in
+      s) # display Help
+        export AUTOCERT_FORCE_EXECUTE_SCRIPT=1
+   esac
+done
 
 if [ -f "./deployment.key" ]; then
     if [ ! $CERT_SSH_AGENT_INITIALIZED ]; then
@@ -22,18 +31,17 @@ fi
 
 pushd data
 GIT_PREVIOUS_VERSION=$(git rev-parse HEAD)
-git reset --hard HEAD || true
 git pull -v --no-rebase "origin" $CERT_GIT_BRANCH
 GIT_CURRENT_VERSION=$(git rev-parse HEAD)
 popd
 
-if [ "$GIT_CURRENT_VERSION" == "$GIT_PREVIOUS_VERSION" ]; then
+if [ "$GIT_CURRENT_VERSION" == "$GIT_PREVIOUS_VERSION" ] && [ ! $AUTOCERT_FORCE_EXECUTE_SCRIPT ]; then
     echo "[AutoCert] Nothing to update, current verion is $GIT_CURRENT_VERSION"
 else
     echo "[AutoCert] Updated certs to version $GIT_CURRENT_VERSION"
     if [ -f "./after-update-cert.sh" ]; then
         echo "[AutoCert] Running cert update callback after-update-cert.sh"
-        ./after-update-cert.sh
+        . ./after-update-cert.sh
     fi
 fi
 

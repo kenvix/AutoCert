@@ -1,4 +1,5 @@
 #!/bin/bash
+export AUTOCERT_ROOT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 if [ -z $AUTOCERT_INITED ]
 then
@@ -10,7 +11,14 @@ then
     export AUTOCERT_INITED=1
 fi
 
+
 source ./config.sh
+export CERT_PATH="$AUTOCERT_ROOT_DIR/data/acme/${ACME_DOMAINS[0]}"
+export CERT_DOMAIN="${ACME_DOMAINS[0]}"
+export CERT_PATH_FULLCHAIN="$CERT_PATH/fullchain.cer"
+export CERT_PATH_CER="$CERT_PATH/${ACME_DOMAINS[0]}.cer"
+export CERT_PATH_KEY="$CERT_PATH/${ACME_DOMAINS[0]}.key"
+export CERT_PATH_PFX="$CERT_PATH/${ACME_DOMAINS[0]}.pfx"
 
 RunACME(){
     if [ "$ACME_MERGED_PARAMS" ]
