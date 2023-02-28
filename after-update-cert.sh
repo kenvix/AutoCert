@@ -18,6 +18,6 @@ then
 else 
     echo "[powershell] Execute: powershell.exe after-update-cert.ps1"
     if [ -f "after-update-cert.ps1" ]; then
-        powershell.exe -NonInteractive -NoLogo -executionpolicy bypass -NoProfile -File ""
+        powershell.exe -NonInteractive -NoLogo -executionpolicy bypass -NoProfile -File "after-update-cert.ps1"
     fi
 fi

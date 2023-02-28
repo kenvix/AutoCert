@@ -4,7 +4,7 @@
 
 当域名的证书不存在时，程序可以自动申请证书，但不保证成功。
 
-客户端支持 Linux 和 Windows，Windows 下须使用 Git Bash 执行。在 Windows 下，支持 Powershell，会自动执行 `after-update-cert.ps1`，该文件内置了自动更新 IIS 的证书的脚本，若不需要则可以删除该文件
+客户端支持 Linux 和 Windows，Windows 下须使用 Git Bash 执行。在 Windows 下，支持 Powershell，同时会自动执行 `after-update-cert.ps1`，该文件内置了自动更新 IIS 的证书的脚本，若不需要则可以删除该文件
 
 ## 配置
 
@@ -51,3 +51,10 @@
 4. 进入所在目录，运行 `chmod +x *.sh`
 5. 上传并按需修改 `after-update-cert.sh` 若没有回调需要运行则可以不上传这个文件
 6. 运行 `client.sh` 即可更新证书
+
+注：Windows 下的运行方式为: （**需要以管理员权限运行**）
+```bat
+"C:\Program Files\Git\git-bash.exe" "C:\Work-Station\Other\AutoCert-Kenvix\client.sh"
+```
+
+`"C:\Program Files\Git\git-bash.exe"` 为git-bash的绝对路径，`C:\Work-Station\Other\AutoCert-Kenvix\client.sh` 为客户端脚本的绝对路径
