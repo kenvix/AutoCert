@@ -5,8 +5,24 @@ name: "Update Certs"
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  watch:
-    types: [started]
+  workflow_dispatch:
+    inputs:
+      AUTOCERT_FORCE_PUSH:
+        description: 'Force do git push'
+        required: true
+        default: 'false'
+        type: choice
+        options:
+        - 'false'
+        - 'true'
+      AUTOCERT_FORCE_REISSUE:
+        description: 'Force remove old cert and reissue new cert'
+        required: true
+        default: 'false'
+        type: choice
+        options:
+        - 'false'
+        - 'true'
   schedule:
     - cron: '0 20 1 * *'
 
@@ -25,18 +41,19 @@ jobs:
     # Runs a set of commands using the runners shell
     - name: Run AutoCert CI Cron
       env: 
+        AUTOCERT_FORCE_PUSH: ${{ inputs.AUTOCERT_FORCE_PUSH }}
         CERT_GIT_EMAIL: ci@kenvix.com
         CERT_GIT_USER: Kenvix-AutoCert-CI
         CERT_GIT_BRANCH: master
-        CERT_GIT_URI: git@github.com:your/giturl.git
+        CERT_GIT_URI: git@github.com:kenvix/cert.git
         CERT_GIT_COMMIT_MESSAGE: AutoCert Update
       run: |
         pushd $GITHUB_WORKSPACE
         chmod +x ci-cron.sh
         ./ci-cron.sh
         popd
-    - name: Upload Certs as artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: Certs
-        path: data/acme
+#     - name: Upload Certs as artifact
+#       uses: actions/upload-artifact@v1
+#       with:
+#         name: Certs
+#         path: data/acme
