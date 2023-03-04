@@ -4,6 +4,7 @@
 export AUTOCERT_ROOT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 pushd "$AUTOCERT_ROOT_DIR"
 source ./init.sh
+export GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=no -o ForwardX11=no'
 
 while getopts ":hfs" option; do
    case $option in
@@ -46,6 +47,11 @@ if [ ! -f "./data/.git/HEAD" ]; then
         git clone --recursive --branch $CERT_GIT_BRANCH "$CERT_GIT_URI_SLAVE" ./data
     else
         git clone --recursive --branch $CERT_GIT_BRANCH "$CERT_GIT_URI" ./data
+    fi
+
+    if [ $? -ne 0 ]; then
+        echo "[AutoCert] Failed to clone cert repo"
+        exit 1
     fi
 
     if [ ! -z $CERT_GIT_URI_SLAVE ]; then
