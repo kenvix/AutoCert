@@ -58,3 +58,5 @@
 ```
 
 `"C:\Program Files\Git\git-bash.exe"` 为git-bash的绝对路径，`C:\Work-Station\Other\AutoCert-Kenvix\client.sh` 为客户端脚本的绝对路径
+
+### 群晖客户端

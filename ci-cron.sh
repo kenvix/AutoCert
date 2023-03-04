@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "[AutoCert] Cron for CI version 3"
 
 export AUTOCERT_CI_MODE=1
@@ -24,16 +25,10 @@ ExitCIShell() {
         rm ~/.ssh/id_rsa
         mv ~/.ssh/id_rsa.autocert-backup ~/.ssh/id_rsa
     fi
-    exit $1
+    exit $?
 }
 
 git clone --recursive --branch $CERT_GIT_BRANCH --depth=1 "$CERT_GIT_URI" ./data
-
-if [ $? -ne 0 ]; then
-    ErrorCode=$?
-    echo "[AutoCert] Checkout Data repo failed $CERT_GIT_URI ($CERT_GIT_BRANCH) with code $ErrorCode"
-    ExitCIShell $ErrorCode
-fi
 
 chmod -R 777 *.sh
 echo "[AutoCert] Files in ./ present:"
@@ -59,9 +54,16 @@ pushd ./data
 
 git add .
 git commit -m "$CERT_GIT_COMMIT_MESSAGE" -v -a
-if [ $? -eq 0 ]; then
+if [ $? -eq 0 ] || [ "$AUTOCERT_FORCE_PUSH" == true ]; then
     echo "[AutoCert] File changes detected"
     git push --force -v "origin" $CERT_GIT_BRANCH
+    
+    # if CERT_GIT_URI_SLAVE is set
+    if [ ! -z $CERT_GIT_URI_SLAVE ]; then
+        git remote add slave "$CERT_GIT_URI_SLAVE_PUSH"
+        git push --force -v "slave" $CERT_GIT_BRANCH
+    fi
+
     ExitCIShell
 else
     echo "[AutoCert] No changes to commit."

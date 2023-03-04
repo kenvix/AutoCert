@@ -13,6 +13,26 @@ fi
 
 
 source ./config.sh
+
+# if _secret.sh exist then include
+if [ -f "./_secret.sh" ]; then
+    source ./_secret.sh
+fi
+
+# if CERT_GIT_URI_SLAVE is set
+if [ ! -z $CERT_GIT_URI_SLAVE ]; then
+    # if CERT_GIT_URI_SLAVE_PUSH is not set
+    if [ -z $CERT_GIT_URI_SLAVE_PUSH ]; then
+        export CERT_GIT_URI_SLAVE_PUSH="$CERT_GIT_URI_SLAVE"
+    fi
+fi
+
+# if CERT_GIT_URI_PUSH is not set
+if [ -z $CERT_GIT_URI_PUSH ]; then
+    export CERT_GIT_URI_PUSH="$CERT_GIT_URI"
+fi
+
+
 export CERT_PATH="$AUTOCERT_ROOT_DIR/data/acme/${ACME_DOMAINS[0]}"
 export CERT_DOMAIN="${ACME_DOMAINS[0]}"
 export CERT_PATH_FULLCHAIN="$CERT_PATH/fullchain.cer"

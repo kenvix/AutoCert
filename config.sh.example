@@ -8,12 +8,15 @@ export ACME_DOMAINS=("example.com" "*.example.com")
 export ISSUE_PARAMS="" #eg: to use cloudflare dns, add this: --dns dns_cf   
 
 # Target Git
-# WARNING: If you use CI, Put them in the CI's environment variable settings, and DELETE them from this file
-export CERT_GIT_URI="github.com/example/certs.git"
-export CERT_GIT_BRANCH=master
-export CERT_GIT_USER="example"
-export CERT_GIT_EMAIL="example@example.com"
 export CERT_GIT_COMMIT_MESSAGE="AutoCommit"
+# WARNING: If you use CI, Put them in the CI's environment variable settings, and DELETE them from this file
+if [ ! $AUTOCERT_CI_MODE ]; then
+export CERT_GIT_URI="git@github.com:kenvix/example.git"
+export CERT_GIT_URI_SLAVE="" # slave git url, if you want to push to another git
+export CERT_GIT_BRANCH=master
+export CERT_GIT_USER="kenvix"
+export CERT_GIT_EMAIL="i@kenvix.com"
+fi
 
 # Put acme.sh environment arugments here
 #export CF_Key=""
